@@ -66,11 +66,14 @@ class _ProductCardState extends State<ProductCard> {
                     ),
             ),
             const SizedBox(height: 10),
-            Text(
-              widget.title,
-              style: const TextStyle(
-                // fontWeight: FontWeight.bold,
-                fontSize: 14,
+            Expanded(
+              child: Text(
+                widget.title,
+                style: const TextStyle(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis
+                ),
               ),
             ),
             const SizedBox(height: 10),

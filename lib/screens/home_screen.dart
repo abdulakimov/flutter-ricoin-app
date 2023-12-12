@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final EventServices eventServices = EventServices();
   final AuthServices authServices = AuthServices();
 
+
+
   @override
   void initState() {
     super.initState();
@@ -32,19 +34,33 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchAllUsers();
   }
 
+  
+
   fetchAllEvents() async {
     await eventServices.getEvents(context);
-    setState(() {
+    if (mounted) {
+      setState(() {
       events = eventServices.eventList;
     });
+    }
   }
 
   fetchAllUsers() async {
     await authServices.getAllUsers(context);
-    setState(() {
+    if (mounted) {
+      setState(() {
       users = authServices.usersList;
     });
+    }
   }
+
+  // //dispose fetchAllEvents
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   fetchAllEvents();
+  //   fetchAllUsers();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Bu haftadagi tadbirlar",
+                      "Barcha tadbirlar",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -197,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: Column(
                           children: [
-                            for (var i = 0; i < 3; i++)
+                            for (var i = 0; i < 2; i++)
                               RatingCard(
                                 placerName:
                                     "${jsonEncode(users[i].surname).replaceAll('"', '')} ${jsonEncode(users[i].name).replaceAll('"', '')}",

@@ -103,7 +103,7 @@ class AuthServices {
   }
 
   // get user data
-  void getUserData(
+  Future getUserData(
     BuildContext context,
   ) async {
     try {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_ricoin_app/dependency_injection.dart';
 import 'package:flutter_ricoin_app/services/auth_services.dart';
 import 'package:flutter_ricoin_app/providers/user_provider.dart';
@@ -9,20 +10,33 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+  // ignore: deprecated_member_use
+  FlutterNativeSplash.removeAfter(initialization);
 
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
     ], child: const MyApp()),
   );
+  
+  
   DependencyInjection.init();
+}
+
+Future initialization(BuildContext? context) async {
+  // load all resources
+  AuthServices authServices = AuthServices();
+  await authServices.getUserData(context!);
+
+  await Future.delayed(const Duration(milliseconds: 1));
 }
 
 class MyApp extends StatefulWidget {

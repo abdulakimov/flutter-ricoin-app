@@ -66,7 +66,6 @@ class _EventCardState extends State<EventCard> {
           child: Container(
             padding: const EdgeInsets.all(20),
             width: 200,
-            height: 140,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),

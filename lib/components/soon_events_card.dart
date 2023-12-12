@@ -65,7 +65,6 @@ class _SoonEventCardState extends State<SoonEventCard> {
         child: Container(
           alignment: Alignment.center,
           width: 330,
-          height: 200,
           decoration: BoxDecoration(
               color: const Color(0xFFA39BFF),
               borderRadius: BorderRadius.circular(12),

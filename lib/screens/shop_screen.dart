@@ -39,17 +39,29 @@ class _ShopScreenState extends State<ShopScreen> {
 
   fetchAllEvents() async {
     await eventServices.getEvents(context);
-    setState(() {
+    if (mounted) {
+      setState(() {
       events = eventServices.eventList;
     });
+    }
   }
 
   fetchAllProducts() async {
     await productServices.getAllProducts(context);
-    setState(() {
+    if (mounted) {
+      setState(() {
       products = productServices.productList;
     });
+    }
   }
+
+// //dispose fetchAllProducts
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     fetchAllProducts();
+//     fetchAllEvents();
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +86,8 @@ class _ShopScreenState extends State<ShopScreen> {
         showChildOpacityTransition: false,
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1));
-          products.clear();
           fetchAllProducts();
+          products.clear();
 
           // ignore: use_build_context_synchronously
           authServices.getUserData(context);
@@ -155,7 +167,7 @@ class _ShopScreenState extends State<ShopScreen> {
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.6,
+                    childAspectRatio: 0.58,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),

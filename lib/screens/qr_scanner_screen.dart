@@ -76,6 +76,17 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       top: false,
       bottom: false,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          // leading: IconButton(
+          //   icon: const Icon(
+          //     Icons.arrow_back_ios,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () => Navigator.pop(context),
+          // ),
+        ),
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         body: LayoutBuilder(
