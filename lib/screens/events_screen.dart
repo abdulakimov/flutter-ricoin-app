@@ -26,6 +26,7 @@ class _EventScreenState extends State<EventScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF20095F),
         title: const Text("Barcha tadbirlar"),
       ),
       body: SingleChildScrollView(
@@ -37,15 +38,15 @@ class _EventScreenState extends State<EventScreen> {
               children: [
                 for (var i = 0; i < widget.events.length; i++)
                   EventsCard(
-                      id: jsonEncode(widget.events[i].id).replaceAll('"', ''),
-                      name:
-                          jsonEncode(widget.events[i].name).replaceAll('"', ''),
-                      coins: jsonEncode(widget.events[i].coins)
-                          .replaceAll('"', ''),
-                      date:
-                          jsonEncode(widget.events[i].date).replaceAll('"', ''),
-                      location: jsonEncode(widget.events[i].location)
-                          .replaceAll('"', '')),
+                    id: jsonEncode(widget.events[i].id).replaceAll('"', ''),
+                    name: jsonEncode(widget.events[i].name).replaceAll('"', ''),
+                    coins:
+                        jsonEncode(widget.events[i].coins).replaceAll('"', ''),
+                    date: jsonEncode(widget.events[i].date).replaceAll('"', ''),
+                    location: jsonEncode(widget.events[i].location)
+                        .replaceAll('"', ''),
+                    participants: widget.events[i].participants,
+                  ),
               ],
             ),
           ),

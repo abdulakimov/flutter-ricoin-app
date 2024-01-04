@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.white,
           showUnselectedLabels: false,
-          selectedItemColor: Colors.black,
+          selectedItemColor: const Color(0xFF230C61),
           selectedLabelStyle:
               const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
           elevation: 0,
@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Icon(FluentSystemIcons.ic_fluent_home_regular),
               activeIcon: Icon(FluentSystemIcons.ic_fluent_home_filled),
-              label: "Asosiy",
+              label: "Asosiy"
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag_outlined),
@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Icon(FluentSystemIcons.ic_fluent_person_regular),
               activeIcon: Icon(FluentSystemIcons.ic_fluent_person_filled),
-              label: "Profil",
+              label: "Profil"
             ),
           ],
         ));

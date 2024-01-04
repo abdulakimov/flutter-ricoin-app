@@ -1,4 +1,4 @@
-package com.example.flutter_ricoin_app
+package com.minitech.ricoin_app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -16,6 +16,7 @@ class _InfoScreenState extends State<InfoScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF20095F),
         title: const Text("Ma'lumotlar"),
       ),
       body: SingleChildScrollView(
@@ -54,21 +55,6 @@ class _InfoScreenState extends State<InfoScreen> {
                       FluentSystemIcons.ic_fluent_chevron_down_regular),
                   content: const Text(
                       " - Siz buyurtmalarni Raqamli iqtisodiyot fakultetining \"Parvoz\" liderlar jamosidan olishingiz mumkin. Buning uchun fakultet binosining 4 qavatidagi 3-xonaga tashrif buyuring va buyurtmalarni oling."),
-                ),
-                AccordionSection(
-                  headerBorderRadius: 5,
-                  headerPadding: const EdgeInsets.all(12),
-                  headerBackgroundColor: Colors.white,
-                  header: const Text(
-                    "Buyurtmalarni bekor qilish mumkinmi?",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  contentBorderWidth: 0,
-                  contentBorderRadius: 5,
-                  rightIcon: const Icon(
-                      FluentSystemIcons.ic_fluent_chevron_down_regular),
-                  content: const Text(
-                      " - Siz buyurtmalarni to'g'ridan-to'g'ri dastur orqali bekor qila olmaysiz. Buning uchun \"Parvoz\" liderlar jamoasiga murojaat qilishingiz kerak bo'ladi."),
                 ),
                 AccordionSection(
                   headerBorderRadius: 5,

@@ -1,7 +1,10 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ricoin_app/screens/event_details_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class EventsCard extends StatefulWidget {
   final String id;
@@ -9,14 +12,17 @@ class EventsCard extends StatefulWidget {
   final String coins;
   final String date;
   final String location;
+  final List<dynamic> participants;
 
-  const EventsCard(
-      {super.key,
-      required this.name,
-      required this.coins,
-      required this.date,
-      required this.location,
-      required this.id});
+  const EventsCard({
+    super.key,
+    required this.name,
+    required this.coins,
+    required this.date,
+    required this.location,
+    required this.id,
+    required this.participants,
+  });
 
   @override
   State<EventsCard> createState() => _EventsCardState();
@@ -47,18 +53,20 @@ class _EventsCardState extends State<EventsCard> {
 
     String hoursMinutes = DateFormat('HH:mm').format(dateTime);
 
-    return GestureDetector(
+    return ZoomTapAnimation(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EventDetailsScreen(
-                      eventId: widget.id,
-                      eventName: widget.name,
-                      eventAdress: widget.location,
-                      eventTime: widget.date,
-                      eventCost: widget.coins,
-                    )));
+          context,
+          CupertinoPageRoute(
+            builder: (context) => EventDetailsScreen(
+              eventId: widget.id,
+              eventName: widget.name,
+              eventAdress: widget.location,
+              eventTime: widget.date,
+              eventCost: widget.coins,
+            ),
+          ),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -115,12 +123,44 @@ class _EventsCardState extends State<EventsCard> {
                     const SizedBox(
                       height: 18,
                     ),
-                    Text(
-                      "Sovrin: ${widget.coins} ta coin",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Sovrin: ${widget.coins} ta ricoin",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF20095F),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FluentSystemIcons.ic_fluent_person_regular,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                widget.participants.length.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),

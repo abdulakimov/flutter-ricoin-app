@@ -1,7 +1,10 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ricoin_app/screens/event_details_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class SoonEventCard extends StatefulWidget {
   final String id;
@@ -9,6 +12,7 @@ class SoonEventCard extends StatefulWidget {
   final String coins;
   final String date;
   final String location;
+  final List<dynamic> participants;
 
   const SoonEventCard({
     super.key,
@@ -17,6 +21,7 @@ class SoonEventCard extends StatefulWidget {
     required this.date,
     required this.location,
     required this.id,
+    required this.participants,
   });
 
   @override
@@ -47,11 +52,11 @@ class _SoonEventCardState extends State<SoonEventCard> {
     if (monthName == "December") monthName = "dekabr";
 
     String hoursMinutes = DateFormat('HH:mm').format(dateTime);
-    return GestureDetector(
+    return ZoomTapAnimation(
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(
+            CupertinoPageRoute(
                 builder: (context) => EventDetailsScreen(
                       eventId: widget.id,
                       eventName: widget.name,
@@ -66,11 +71,11 @@ class _SoonEventCardState extends State<SoonEventCard> {
           alignment: Alignment.center,
           width: 330,
           decoration: BoxDecoration(
-              color: const Color(0xFFA39BFF),
+              color: const Color(0xFF4400FF),
               borderRadius: BorderRadius.circular(12),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0xFFA39BFF),
+                  color: Color(0x631500FF),
                   blurRadius: 30,
                   offset: Offset(0, 4),
                   spreadRadius: 0,
@@ -86,7 +91,7 @@ class _SoonEventCardState extends State<SoonEventCard> {
                     "assets/icons/bird.svg",
                     height: 140,
                     // ignore: deprecated_member_use
-                    color: const Color(0xFF9B93FF),
+                    color: const Color.fromRGBO(77, 64, 255, 1),
                   ),
                 ),
                 Column(
@@ -125,13 +130,45 @@ class _SoonEventCardState extends State<SoonEventCard> {
                     const SizedBox(
                       height: 18,
                     ),
-                    Text(
-                      "Sovrin: ${widget.coins} ta coin",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Sovrin: ${widget.coins} ta ricoin",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FluentSystemIcons.ic_fluent_person_regular,
+                                size: 20,
+                                color: Color(0xFF20095F),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                widget.participants.length.toString(),
+                                style: const TextStyle(
+                                  color: Color(0xFF20095F),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),

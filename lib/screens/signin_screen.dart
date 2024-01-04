@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ricoin_app/services/auth_services.dart';
 import 'package:flutter_ricoin_app/screens/signup_screen.dart';
@@ -46,21 +47,40 @@ class _SignInState extends State<SignIn> {
                 const EdgeInsets.symmetric(horizontal: 30.0, vertical: 100.0),
             child: Column(
               children: [
+                const Icon(
+                  Icons.fingerprint,
+                  size: 150,
+                  color: Color(0xFF20095F),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Akkauntinigizga kiring",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
                 TextField(
                   cursorColor: Colors.black,
                   // textCapitalization: TextCapitalization.words,
                   controller: emailController,
                   decoration: InputDecoration(
                     hintText: "Email",
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Color(0xFF20095F)),
                     prefixIcon: const Icon(Icons.email),
-                    prefixIconColor: Colors.black,
+                    prefixIconColor: const Color(0xFF20095F),
                     label: const Text("Email"),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
+                      borderSide:
+                          BorderSide(color: Color(0xFF20095F), width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                   ),
@@ -69,20 +89,21 @@ class _SignInState extends State<SignIn> {
                   height: 10,
                 ),
                 TextField(
-                  cursorColor: Colors.black,
+                  cursorColor: const Color(0xFF20095F),
                   // textCapitalization: TextCapitalization.words,
                   controller: passwordController,
                   decoration: InputDecoration(
                     hintText: "Parol",
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Color(0xFF20095F)),
                     prefixIcon: const Icon(Icons.lock),
-                    prefixIconColor: Colors.black,
+                    prefixIconColor: const Color(0xFF20095F),
                     label: const Text("Parol"),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
+                      borderSide:
+                          BorderSide(color: Color(0xFF20095F), width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                   ),
@@ -92,7 +113,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: const Color(0xFF20095F),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -104,14 +125,15 @@ class _SignInState extends State<SignIn> {
                     )),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUp()),
+                      CupertinoPageRoute(builder: (context) => const SignUp()),
+                      (route) => false,
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Ro'yhatdan o'tish",
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                    style: TextStyle(color: Color(0xFF20095F), fontSize: 13),
                   ),
                 )
               ],

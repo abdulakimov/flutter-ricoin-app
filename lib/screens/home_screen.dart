@@ -25,8 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final EventServices eventServices = EventServices();
   final AuthServices authServices = AuthServices();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -34,14 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
     fetchAllUsers();
   }
 
-  
-
   fetchAllEvents() async {
     await eventServices.getEvents(context);
     if (mounted) {
       setState(() {
-      events = eventServices.eventList;
-    });
+        events = eventServices.eventList;
+      });
     }
   }
 
@@ -49,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await authServices.getAllUsers(context);
     if (mounted) {
       setState(() {
-      users = authServices.usersList;
-    });
+        users = authServices.usersList;
+      });
     }
   }
 
@@ -70,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (events.isEmpty || users.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(
-          color: Colors.black,
+          color: Color(0xFF20095F),
           backgroundColor: Colors.white,
         ),
       );
@@ -80,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: LiquidPullToRefresh(
         springAnimationDurationInMilliseconds: 200,
         color: Colors.grey.shade100,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF20095F),
         showChildOpacityTransition: false,
         onRefresh: () async {
           events.clear();
@@ -142,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             const Icon(
+                              color: Color(0xFF20095F),
                               FluentSystemIcons.ic_fluent_add_circle_filled,
                             )
                           ],
@@ -158,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   location: jsonEncode(events[0].location).replaceAll('"', ''),
                   date: jsonEncode(events[0].date).replaceAll('"', ''),
                   coins: jsonEncode(events[0].coins).replaceAll('"', ''),
+                  participants: events[0].participants,
                 ),
               ),
               const SizedBox(
@@ -170,8 +168,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const Text(
                       "Barcha tadbirlar",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -189,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               eventCost: jsonEncode(events[i].coins)
                                   .replaceAll('"', ''),
                               id: jsonEncode(events[i].id).replaceAll('"', ''),
+                              participants: events[i].participants,
                             ),
                         ],
                       ),
@@ -213,11 +214,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: Column(
                           children: [
-                            for (var i = 0; i < 2; i++)
+                            for (var i = 0; i < 3; i++)
                               RatingCard(
                                 placerName:
                                     "${jsonEncode(users[i].surname).replaceAll('"', '')} ${jsonEncode(users[i].name).replaceAll('"', '')}",
-                                iconAdress: 'assets/images/$i-medal.png',
+                                iconAdress: jsonEncode(users[i].avatar)
+                                    .replaceAll('"', ''),
                                 coinCount: jsonEncode(users[i].coins)
                                     .replaceAll('"', ''),
                               ),

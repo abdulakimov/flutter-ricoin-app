@@ -22,12 +22,12 @@ Future main() async {
   FlutterNativeSplash.removeAfter(initialization);
 
   runApp(
+
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
     ], child: const MyApp()),
   );
-  
-  
+
   DependencyInjection.init();
 }
 
@@ -60,7 +60,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Ricoin App',
       theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
+        textTheme: GoogleFonts.montserratTextTheme(
+          Theme.of(context).textTheme.apply(
+                bodyColor: const Color(0xFF20095F),
+              ),
+        ),
         useMaterial3: true,
       ),
       home: Provider.of<UserProvider>(context).user.token.isNotEmpty

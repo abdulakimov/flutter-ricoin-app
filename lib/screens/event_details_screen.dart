@@ -55,6 +55,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF20095F),
         title: const Text("Tadbir haqida"),
       ),
       body: Padding(
@@ -63,24 +64,31 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Tadbir nomi: ${widget.eventName}",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              widget.eventName,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             const SizedBox(height: 18),
             Text(
-              "Tadbir manzili: ${widget.eventAdress}",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              "Manzil: ${widget.eventAdress}",
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 18),
-            Text(
-              "Tadbir vaqti: $day - $monthName, $hoursMinutes da",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              "Tadbir sovrini: ${widget.eventCost} ta coin",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "$day - $monthName, $hoursMinutes da",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  "Sovrin: ${widget.eventCost} ta ricoin",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -93,8 +101,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             MaterialPageRoute(builder: (context) => const QrScannerScreen()),
           );
 
-          if (qrResult.contains("enter")) {
-            if (qrResult.replaceAll('enter-', '') != widget.eventId) {
+          if (qrResult.contains("start")) {
+            if (qrResult.replaceAll('start', '') != widget.eventId) {
               // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -108,8 +116,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             }
           }
 
-          if (qrResult.contains("exit")) {
-            if (qrResult.replaceAll('exit-', '') != widget.eventId) {
+          if (qrResult.contains("end")) {
+            if (qrResult.replaceAll('end', '') != widget.eventId) {
               // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -126,7 +134,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         backgroundColor: Colors.white,
         child: const Icon(
           Icons.qr_code_2_sharp,
-          color: Colors.black,
+          color: Color(0xFF20095F),
         ),
       ),
     );

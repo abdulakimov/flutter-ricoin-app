@@ -18,8 +18,13 @@ class ExchangeServices {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token':
               // ignore: use_build_context_synchronously
-              Provider.of<UserProvider>(context, listen: false).user.token,
+              userProvider.user.token,
         },
+        body: jsonEncode(
+          {
+            'amount': 1,
+          },
+        ),
       );
 
       // ignore: use_build_context_synchronously

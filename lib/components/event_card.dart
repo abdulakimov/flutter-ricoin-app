@@ -1,7 +1,10 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ricoin_app/screens/event_details_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class EventCard extends StatefulWidget {
   final String id;
@@ -9,13 +12,16 @@ class EventCard extends StatefulWidget {
   final String eventAdress;
   final String eventTime;
   final String eventCost;
-  const EventCard(
-      {super.key,
-      required this.eventName,
-      required this.eventAdress,
-      required this.eventTime,
-      required this.eventCost,
-      required this.id});
+  final List<dynamic> participants;
+  const EventCard({
+    super.key,
+    required this.eventName,
+    required this.eventAdress,
+    required this.eventTime,
+    required this.eventCost,
+    required this.id,
+    required this.participants,
+  });
 
   @override
   State<EventCard> createState() => _EventCardState();
@@ -46,18 +52,20 @@ class _EventCardState extends State<EventCard> {
 
     String hoursMinutes = DateFormat('HH:mm').format(dateTime);
 
-    return GestureDetector(
+    return ZoomTapAnimation(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EventDetailsScreen(
-                      eventId: widget.id,
-                      eventName: widget.eventName,
-                      eventAdress: widget.eventAdress,
-                      eventTime: widget.eventTime,
-                      eventCost: widget.eventCost,
-                    )));
+          context,
+          CupertinoPageRoute(
+            builder: (context) => EventDetailsScreen(
+              eventId: widget.id,
+              eventName: widget.eventName,
+              eventAdress: widget.eventAdress,
+              eventTime: widget.eventTime,
+              eventCost: widget.eventCost,
+            ),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(right: 20),
@@ -65,7 +73,7 @@ class _EventCardState extends State<EventCard> {
           padding: const EdgeInsets.symmetric(vertical: 25),
           child: Container(
             padding: const EdgeInsets.all(20),
-            width: 200,
+            // width: 200,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -114,12 +122,46 @@ class _EventCardState extends State<EventCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      'Sovrin: ${widget.eventCost} ta coin',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          'Sovrin: ${widget.eventCost} ta ricoin',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF20095F),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FluentSystemIcons.ic_fluent_person_regular,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                widget.participants.length.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 )

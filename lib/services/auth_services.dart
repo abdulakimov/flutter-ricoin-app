@@ -92,8 +92,11 @@ class AuthServices {
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
 
           // ignore: use_build_context_synchronously
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MainScreen()));
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+            (route) => false,
+          );
         },
       );
     } catch (e) {
@@ -153,11 +156,12 @@ class AuthServices {
     // ignore: use_build_context_synchronously
 
     // ignore: use_build_context_synchronously
-    await Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => const SignIn(),
       ),
+      (route) => false,
     );
   }
 
@@ -192,37 +196,35 @@ class AuthServices {
       throw Exception(e.toString());
     }
   }
+
+  // change avatar
+  changeAvatar(BuildContext context, String image) async {
+    try {
+      String token =
+          Provider.of<UserProvider>(context, listen: false).user.token;
+      final response = await http.patch(
+        Uri.parse('$baseUrl/users/avatar'),
+        body: jsonEncode({
+          'avatar': image,
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token
+        },
+      );
+
+      // ignore: use_build_context_synchronously
+      httpErrorHandle(
+        response: response,
+        context: context,
+        onSuccess: () {
+          // ignore: use_build_context_synchronously
+          Provider.of<UserProvider>(context, listen: false)
+              .setUser(response.body);
+        },
+      );
+    } catch (e) {
+      // showSnackBar(context, e.toString());
+    }
+  }
 }
-
-
-
-
-
-
-
-
-
-// final response = await http.get(
-//         Uri.parse('$baseUrl/users'),
-//         headers: <String, String>{
-//           'Content-Type': 'application/json; charset=UTF-8',
-//         },
-//       );
-
-//       // ignore: use_build_context_synchronously
-//       httpErrorHandle(
-//           response: response,
-//           context: context,
-//           onSuccess: () {
-//             for (int i = 0; i < jsonDecode(response.body).length; i++) {
-//               usersList.add(
-//                 User.fromJson(
-//                   jsonEncode(
-//                     jsonDecode(response.body)[i],
-//                   ),
-//                 ),
-//               );
-//             }
-//           });
-
-//       return usersList;

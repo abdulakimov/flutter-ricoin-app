@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ricoin_app/components/product_card.dart';
 import 'package:flutter_ricoin_app/providers/user_provider.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_ricoin_app/screens/orders_screeen.dart';
 import 'package:flutter_ricoin_app/services/auth_services.dart';
 import 'package:flutter_ricoin_app/services/event_services.dart';
 import 'package:flutter_ricoin_app/services/exchange_services.dart';
+import 'package:flutter_ricoin_app/services/orders_services.dart';
 import 'package:flutter_ricoin_app/services/product_services.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +26,11 @@ class ShopScreen extends StatefulWidget {
 class _ShopScreenState extends State<ShopScreen> {
   List<dynamic> events = [];
   List<dynamic> products = [];
+  List<dynamic> ordersList = [];
   final ProductServices productServices = ProductServices();
   final AuthServices authServices = AuthServices();
   final ExchangeServices exchangeServices = ExchangeServices();
+  final OrdersServices ordersServices = OrdersServices();
   final EventServices eventServices = EventServices();
 
   @override
@@ -34,15 +38,25 @@ class _ShopScreenState extends State<ShopScreen> {
     super.initState();
     fetchAllProducts();
     fetchAllEvents();
+    fetchAllOrders();
     authServices.getUserData(context);
+  }
+
+  fetchAllOrders() async {
+    final orders = await ordersServices.getOrders(context);
+    if (mounted) {
+      setState(() {
+        ordersList = orders;
+      });
+    }
   }
 
   fetchAllEvents() async {
     await eventServices.getEvents(context);
     if (mounted) {
       setState(() {
-      events = eventServices.eventList;
-    });
+        events = eventServices.eventList;
+      });
     }
   }
 
@@ -50,8 +64,8 @@ class _ShopScreenState extends State<ShopScreen> {
     await productServices.getAllProducts(context);
     if (mounted) {
       setState(() {
-      products = productServices.productList;
-    });
+        products = productServices.productList;
+      });
     }
   }
 
@@ -65,15 +79,13 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userCartLength =
-        context.watch<UserProvider>().user.bought_products.length;
-
     final user = Provider.of<UserProvider>(context).user;
+    var size = MediaQuery.of(context).size;
 
     if (products.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(
-          color: Colors.black,
+          color: Color(0xFF20095F),
           backgroundColor: Colors.white,
         ),
       );
@@ -82,7 +94,7 @@ class _ShopScreenState extends State<ShopScreen> {
       child: LiquidPullToRefresh(
         springAnimationDurationInMilliseconds: 200,
         color: Colors.grey.shade100,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF20095F),
         showChildOpacityTransition: false,
         onRefresh: () async {
           await Future.delayed(const Duration(seconds: 1));
@@ -132,6 +144,7 @@ class _ShopScreenState extends State<ShopScreen> {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               const Icon(
+                                color: Color(0xFF20095F),
                                 FluentSystemIcons.ic_fluent_add_circle_filled,
                               )
                             ],
@@ -142,22 +155,25 @@ class _ShopScreenState extends State<ShopScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                 builder: (context) => const OrdersScreen(),
                               ),
                             );
                           },
                           child: badges.Badge(
                             badgeStyle: const badges.BadgeStyle(
-                              badgeColor: Colors.black,
+                              badgeColor: Color(0xFF20095F),
                             ),
                             badgeContent: Text(
-                              userCartLength.toString(),
+                              ordersList.length.toString(),
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
                             ),
-                            child: const Icon(Icons.shopping_cart_outlined),
+                            child: const Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Color(0xFF20095F),
+                            ),
                           ))
                     ],
                   ),
@@ -165,16 +181,18 @@ class _ShopScreenState extends State<ShopScreen> {
                 GridView(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.58,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                    childAspectRatio: size.width / (size.height / 1.2),
+                    crossAxisSpacing: 6,
+                    mainAxisSpacing: 6,
                   ),
                   children: List.generate(
                     products.length,
                     (index) => ProductCard(
                       id: jsonEncode(products[index].id).replaceAll('"', ''),
+                      description: jsonEncode(products[index].description)
+                          .replaceAll('"', ''),
                       title:
                           jsonEncode(products[index].name).replaceAll('"', ''),
                       image:

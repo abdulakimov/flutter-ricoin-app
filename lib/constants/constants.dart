@@ -1,1 +1,1 @@
-String baseUrl = "http://194.163.10.1:9000/api";
+String baseUrl = "https://api.ricoin.uz/api";

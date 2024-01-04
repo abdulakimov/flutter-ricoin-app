@@ -22,6 +22,6 @@ void httpErrorHandle({
       showSnackBar(context, jsonDecode(response.body)['message']);
       break;
     default:
-      showSnackBar(context, response.body);
+      showSnackBar(context, jsonDecode(response.body)['message']);
   }
 }

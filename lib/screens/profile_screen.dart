@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:flutter_ricoin_app/providers/user_provider.dart';
 import 'package:flutter_ricoin_app/screens/information_screen.dart';
 import 'package:flutter_ricoin_app/screens/orders_screeen.dart';
 import 'package:flutter_ricoin_app/services/auth_services.dart';
+import 'package:flutter_ricoin_app/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,6 +18,39 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String? image;
+  AuthServices authServices = AuthServices();
+  bool isLoading = false;
+
+  void selectImage() async {
+    isLoading = true;
+    getUserData();
+    var res = await uploadImage();
+    var url = await uploadImageToCloudinary(res);
+    setState(() {
+      image = url;
+    });
+    // ignore: use_build_context_synchronously
+    authServices.changeAvatar(context, image!).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+      getUserData();
+    });
+  }
+
+  // get user data
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
+  Future getUserData() async {
+    authServices.getUserData(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthServices authServices = AuthServices();
@@ -25,17 +61,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 50),
             child: Align(
-              child: Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                  color: Colors.grey.shade200,
-                ),
-                child: const Icon(
-                  FluentSystemIcons.ic_fluent_person_filled,
-                  color: Colors.grey,
-                  size: 100,
+              child: ZoomTapAnimation(
+                onTap: () {
+                  selectImage();
+                },
+                child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
+                    color: Colors.grey.shade200,
+                  ),
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : user.avatar == ""
+                          ? const Icon(
+                              FluentSystemIcons.ic_fluent_person_regular,
+                              color: Colors.grey,
+                              size: 100,
+                            )
+                          : ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(100)),
+                              child: CachedNetworkImage(
+                                imageUrl: user.avatar,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                            ),
                 ),
               ),
             ),
@@ -69,7 +125,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(FluentSystemIcons.ic_fluent_list_regular),
+                          Icon(
+                            FluentSystemIcons.ic_fluent_list_regular,
+                            color: Color(0xFF20095F),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
@@ -102,7 +161,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Row(
                         children: [
-                          Icon(FluentSystemIcons.ic_fluent_notepad_regular),
+                          Icon(
+                            FluentSystemIcons.ic_fluent_notepad_regular,
+                            color: Color(0xFF20095F),
+                          ),
                           SizedBox(
                             width: 10,
                           ),

@@ -36,9 +36,22 @@ class _RatingCardState extends State<RatingCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              widget.iconAdress,
-              width: 40,
+            Container(
+              padding: const EdgeInsets.all(5),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(widget.iconAdress.contains("cloudinary")
+                      ? widget.iconAdress
+                      : "https://res.cloudinary.com/xurshidbey/image/upload/v1703793751/avatar/g8hk9ea0eiuw2ayxipsd.png"),
+                  fit: BoxFit.contain,
+                ),
+                color: Colors.grey.shade200,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(50),
+                ),
+              ),
             ),
             Expanded(
               child: Padding(
